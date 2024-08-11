@@ -94,7 +94,7 @@ body {
 
 .square.is-selected {
   color: #fff;
-  background: #09f;
+  background: rgb(0, 50, 83);
 }
 
 .winner {
