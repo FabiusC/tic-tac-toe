@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
 import confetti from "canvas-confetti";
 import { useState } from "react";
 import { Square } from "../components/Square";
 import { TURNS } from "../constants";
 import { checkEndGame, checkWinnerFrom } from "../logic/board";
 import { WinnerModal } from "../components/WinnerModal";
-import { saveGameToStorage, resetGameStorage, newGame } from "../logic/storage/LocalStorage";
+import { saveGameToStorage, saveScoreToStorage, resetGameStorage, newGame } from "../logic/storage/LocalStorage";
 export function Board() {
     const [board, setBoard] = useState(() => {
         const savedBoard = window.localStorage.getItem('board');
@@ -26,6 +25,7 @@ export function Board() {
     const [winner, setWinner] = useState(null); //null means no winner and false means a tie
 
     const updateBoard = (index) => {
+        console.log(`Points X: ${pointsX} Points O: ${pointsO} saved to storage`);
         // Update the board only if the square is empty
         if (board[index] || winner) return
         const newBoard = [...board]
@@ -39,18 +39,21 @@ export function Board() {
         if (newWinner) {
             confetti();
             setWinner(newWinner);
+            let totalPointsX = JSON.parse(window.localStorage.getItem('pointsX'));
+            let totalPointsO = JSON.parse(window.localStorage.getItem('pointsO'));
             if (newWinner === TURNS.X) {
-                setPointsX(pointsX + 1);
-                setPointsO(pointsO + 0);
+                totalPointsX += 1;
+                setPointsX(totalPointsX);
             } else {
-                setPointsO(pointsO + 1);
-                setPointsX(pointsX + 0);
+                totalPointsO += 1;
+                setPointsO(totalPointsO);
             }
+            console.log(`Points X: ${totalPointsX} Points O: ${totalPointsO}`);
         } else if (checkEndGame(newBoard)) {
-            setWinner(false);
+            setWinner('🫱🏽‍🫲🏾');
         }
         // Save party in local storage
-        saveGameToStorage({ board: newBoard, turn: turn, pointsX: pointsX, pointsO: pointsO})
+        saveGameToStorage({ board: newBoard, turn: newTurn, pointsX: pointsX, pointsO: pointsO })
     }
     const resetGame = () => {
         setBoard(Array(9).fill(null));
@@ -90,7 +93,8 @@ export function Board() {
                 <Square isSelected={turn === TURNS.O}>{TURNS.O}</Square>
                 <h2>{pointsO}</h2>
             </div>
-            <WinnerModal resetGame={startNewGame} winner={winner}/>
+            <>{saveScoreToStorage({ pointsX: pointsX, pointsO: pointsO })}</>
+            <WinnerModal resetGame={startNewGame} winner={winner} />
         </main>
     );
 }

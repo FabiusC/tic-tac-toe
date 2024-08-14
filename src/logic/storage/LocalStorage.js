@@ -5,6 +5,11 @@ export const saveGameToStorage = ({board, turn, pointsX, pointsO}) => {
     window.localStorage.setItem('pointsO', pointsO);
 }
 
+export const saveScoreToStorage = ({pointsX, pointsO}) => {
+    window.localStorage.setItem('pointsX', pointsX);
+    window.localStorage.setItem('pointsO', pointsO);
+}
+
 export const resetGameStorage = () => {
     window.localStorage.removeItem('board');
     window.localStorage.removeItem('turn');
