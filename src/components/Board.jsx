@@ -5,7 +5,8 @@ import { TURNS } from "../constants";
 import { checkEndGame, checkWinnerFrom } from "../logic/board";
 import { WinnerModal } from "../components/WinnerModal";
 import { saveGameToStorage, saveScoreToStorage, resetGameStorage, newGame } from "../logic/storage/LocalStorage";
-export function Board() {
+
+export function Board({ gameMode }) {
     const [board, setBoard] = useState(() => {
         const savedBoard = window.localStorage.getItem('board');
         return savedBoard ? JSON.parse(savedBoard) : Array(9).fill(null);
@@ -25,16 +26,15 @@ export function Board() {
     const [winner, setWinner] = useState(null); //null means no winner and false means a tie
 
     const updateBoard = (index) => {
-        console.log(`Points X: ${pointsX} Points O: ${pointsO} saved to storage`);
-        // Update the board only if the square is empty
-        if (board[index] || winner) return
-        const newBoard = [...board]
+        if (board[index] || winner) return;
+
+        const newBoard = [...board];
         newBoard[index] = turn;
         setBoard(newBoard);
-        // Change the turn
+
         const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X;
         setTurn(newTurn);
-        // Check if there is a winner
+
         const newWinner = checkWinnerFrom(newBoard);
         if (newWinner) {
             confetti();
@@ -52,9 +52,21 @@ export function Board() {
         } else if (checkEndGame(newBoard)) {
             setWinner('🫱🏽‍🫲🏾');
         }
-        // Save party in local storage
-        saveGameToStorage({ board: newBoard, turn: newTurn, pointsX: pointsX, pointsO: pointsO })
-    }
+
+        saveGameToStorage({ board: newBoard, turn: newTurn, pointsX: pointsX, pointsO: pointsO });
+
+        // Aquí es donde puedes agregar lógica para el turno de la IA si el modo es 'AI'
+        if (gameMode === 'AI' && newTurn === TURNS.O && !newWinner) {
+            // Lógica para que la IA haga su movimiento
+            const availableSquares = newBoard
+                .map((value, index) => (value === null ? index : null))
+                .filter((index) => index !== null);
+
+            const randomMove = availableSquares[Math.floor(Math.random() * availableSquares.length)];
+            setTimeout(() => updateBoard(randomMove), 500); // Simula el movimiento de la IA con un pequeño retraso
+        }
+    };
+
     const resetGame = () => {
         setBoard(Array(9).fill(null));
         setTurn(turn);
@@ -62,14 +74,16 @@ export function Board() {
         setPointsX(0);
         setPointsO(0);
         resetGameStorage();
-    }
+    };
+
     const startNewGame = () => {
         setBoard(Array(9).fill(null));
         setTurn(turn);
         setWinner(null);
         updateBoard(board);
         newGame();
-    }
+    };
+
     return (
         <main className="board">
             <div className="turn">
@@ -98,4 +112,5 @@ export function Board() {
         </main>
     );
 }
+
 export default Board;
