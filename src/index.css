@@ -24,6 +24,13 @@ body {
   min-height: 100vh;
 }
 
+footer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  color: #eee;
+}
+
 * {
   padding: 0;
   margin: 0;
