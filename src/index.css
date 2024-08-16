@@ -34,6 +34,7 @@ footer {
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 
 .board {
@@ -41,7 +42,7 @@ footer {
   flex-direction: row;
   justify-content: space-around;
   align-items: space-around;
-  min-width: 100%;
+  width: 100%;
   margin: 20px auto;
   text-align: center;
 }
@@ -54,17 +55,21 @@ footer {
   color: #eee;
   margin-bottom: 16px;
 }
+
 .title-wrapper {
   display: flex;
   justify-content: center;
   margin: 20px;
 }
+
 .tic {
   color: #7070ff !important;
 }
+
 .tac {
   color: #ff7070 !important;
 }
+
 .toe {
   color: #70ff70 !important;
 }
@@ -135,7 +140,8 @@ footer {
 
 .start-modal .button-container {
   display: flex;
-  min-width: 50hv !important;   
+  flex-direction: column;
+  min-width: 50hv !important;
   justify-content: center;
   gap: 20px;
 }
@@ -225,4 +231,78 @@ footer {
 .start-modal button:hover {
   background: #eee;
   color: #222;
+}
+
+/* Media Query para pantallas pequeñas (móviles en modo vertical) */
+@media (max-width: 768px) {
+  :root {
+    font-size: 16px; /* Reducir el tamaño de fuente en móviles */
+  }
+
+  .board {
+    flex-direction: column; /* Apila los elementos en una columna */
+    align-items: center;
+  }
+
+  .board .title-wrapper {
+    gap: 10px; /* Reducir el espacio entre elementos en móviles */
+    margin-bottom: 10px;
+    order: 0; /* Cambiar el orden de los elementos */
+  }
+
+  .board .game {
+    gap: 5px; /* Reducir el espacio entre elementos en móviles */
+    order: 1; /* Cambiar el orden de los elementos */
+  }
+
+  .board .turn {
+    flex-direction: row !important; /* Mostrar turnos en una fila en móviles */
+    align-items: center !important;
+    justify-content: space-around !important;
+    width: 30% !important;
+    margin-bottom: 20px;
+    order: 2 !important;
+  } 
+
+  .board .button-container {
+    flex-direction: column;
+    gap: 10px;
+    order: 3 !important;
+  }
+
+  .board-container {
+    gap: 10px; /* Reducir el espacio entre elementos en móviles */
+    margin-bottom: 10px;
+  }
+
+  .board .turn {
+    flex-direction: row; /* Mostrar turnos en una fila en móviles */
+    justify-content: space-evenly;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .square {
+    width: 60px;
+    height: 60px;
+    font-size: 24px; /* Reducir el tamaño de las celdas */
+  }
+
+  .board .game {
+    gap: 5px;
+  }
+
+  .title-wrapper {
+    flex-direction: row;
+  }
+
+  .start-modal .button-container {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .winner .text {
+    height: 200px;
+    width: 260px;
+  }
 }
