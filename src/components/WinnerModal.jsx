@@ -1,7 +1,7 @@
 import { Square } from "./Square"
 
 // eslint-disable-next-line react/prop-types
-export function WinnerModal({winner, resetGame}) {
+export function WinnerModal({ winner, resetGame }) {
     if (winner === null) return null
     const winnerText = winner === '🫱🏽‍🫲🏾' ? "It's a tie" : `The winner is:`
     return (
@@ -11,9 +11,7 @@ export function WinnerModal({winner, resetGame}) {
                 <header className="win">
                     {<Square>{winner}</Square>}
                 </header>
-                <footer>
-                    <button onClick={resetGame}>New game</button>
-                </footer>
+                <button onClick={resetGame}>New game</button>
             </div>
         </section >
     )

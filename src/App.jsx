@@ -18,7 +18,7 @@ function App() {
   return (
     <section className="start-modal">
       {!isGameStarted &&
-        <section className="text">
+        <section className="start-modal">
           <h1>Welcome to</h1>
           <div className="title-wrapper">
             <h1 className="tic">Tic</h1> <h1 className="tac">Tac</h1> <h1 className="toe">Toe</h1>

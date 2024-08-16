@@ -140,9 +140,9 @@ footer {
 
 .start-modal .button-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row !important;
   min-width: 50hv !important;
-  justify-content: center;
+  justify-content: center !important;
   gap: 20px;
 }
 
@@ -259,13 +259,13 @@ footer {
     flex-direction: row !important; /* Mostrar turnos en una fila en móviles */
     align-items: center !important;
     justify-content: space-around !important;
-    width: 30% !important;
+    width: 50% !important;
     margin-bottom: 20px;
     order: 2 !important;
   } 
 
   .board .button-container {
-    flex-direction: column;
+    flex-direction: column !important;
     gap: 10px;
     order: 3 !important;
   }
@@ -297,12 +297,26 @@ footer {
   }
 
   .start-modal .button-container {
-    flex-direction: row;
+    justify-content: center !important;
+    flex-direction: column !important;
     gap: 10px;
   }
 
   .winner .text {
     height: 200px;
-    width: 260px;
+    width: 200px;
+  }
+
+  .winner .square {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .winner footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    color: #eee;
   }
 }
