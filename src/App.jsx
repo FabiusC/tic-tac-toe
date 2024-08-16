@@ -10,22 +10,27 @@ function App() {
     setIsGameStarted(true);
   };
 
+  const goToHomePage = () => {
+    setIsGameStarted(false);
+    setGameMode('');
+  };
+
   return (
     <section className="start-modal">
-      <div className="text">
-        {!isGameStarted ? (
-          <>
-            <h2>Welcome to Tic Tac Toe</h2>
-            <p>Are you ready to play?</p>
-            <footer>
-              <button onClick={() => startGame('2P')}>Two Players</button>
-              <button onClick={() => startGame('AI')}>Vs AI</button>
-            </footer>
-          </>
-        ) : (
-          <Board gameMode={gameMode} />
-        )}
-      </div>
+      {!isGameStarted &&
+        <section className="text">
+          <h1>Welcome to</h1>
+          <div className="title-wrapper">
+            <h1 className="tic">Tic</h1> <h1 className="tac">Tac</h1> <h1 className="toe">Toe</h1>
+          </div>
+          <p>Are you ready to play?</p>
+          <div className="button-container">
+            <button onClick={() => startGame('2P')}>Two Players</button>
+            <button onClick={() => startGame('AI')}>Vs AI</button>
+          </div>
+        </section>
+      }
+      {isGameStarted && <Board gameMode={gameMode} goToHomePage={goToHomePage} />}
     </section>
   );
 }
