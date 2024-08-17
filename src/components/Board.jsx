@@ -2,7 +2,7 @@ import confetti from "canvas-confetti";
 import { useState } from "react";
 import { Square } from "../components/Square";
 import { TURNS } from "../constants";
-import { checkEndGame, checkWinnerFrom, minimax } from "../logic/board";
+import { checkEndGame, checkWinnerFrom, aiMove } from "../logic/board";
 import { WinnerModal } from "../components/WinnerModal";
 import { saveGameToStorage, saveScoreToStorage, resetGameStorage, newGame } from "../logic/storage/LocalStorage";
 
@@ -42,7 +42,6 @@ export function Board({ gameMode, goToHomePage }) {
     const updateBoard = (index) => {
         // Si la casilla ya está ocupada o ya hay un ganador, no hace nada
         if (board[index] || winner) return;
-
         // Copia el estado actual del tablero y actualiza la posición con el turno actual
         const newBoard = [...board];
         newBoard[index] = turn;
@@ -60,19 +59,19 @@ export function Board({ gameMode, goToHomePage }) {
         // Verifica si hay un ganador con el nuevo tablero
         const newWinner = checkWinnerFrom(newBoard);
         if (newWinner) {
-            confetti(); // Lanza confetti si hay un ganador
-            setWinner(newWinner); // Actualiza el estado de ganador
+            confetti(); 
+            setWinner(newWinner); 
             let totalPointsX = pointsX;
             let totalPointsO = pointsO;
             if (newWinner === TURNS.X) {
-                totalPointsX += 1; // Incrementa los puntos de X
+                totalPointsX += 1; 
                 setPointsX(totalPointsX);
             } else {
-                totalPointsO += 1; // Incrementa los puntos de O
+                totalPointsO += 1; 
                 setPointsO(totalPointsO);
             }
         } else if (checkEndGame(newBoard)) {
-            // Si todas las casillas están llenas y no hay ganador, declara un empate
+            
             setWinner('🫱🏽‍🫲🏾');
         }
 
@@ -82,33 +81,33 @@ export function Board({ gameMode, goToHomePage }) {
 
     // Función para reiniciar el juego, alternando quién empieza
     const resetGame = () => {
-        const startingTurn = turn === TURNS.X ? TURNS.O : TURNS.X; // Alterna quién inicia
-        setBoard(Array(9).fill(null)); // Limpia el tablero
-        setTurn(startingTurn); // Establece el nuevo turno inicial
-        setAiTurn(gameMode === 'AI' && startingTurn === TURNS.O); // Si es el turno de la IA, la activa
-        setWinner(null); // Reinicia el estado de ganador
-        setPointsX(0); // Reinicia los puntos de X
-        setPointsO(0); // Reinicia los puntos de O
-        resetGameStorage(); // Limpia el almacenamiento local
+        const startingTurn = turn === TURNS.X ? TURNS.O : TURNS.X; 
+        setBoard(Array(9).fill(null)); 
+        setTurn(startingTurn); 
+        setAiTurn(gameMode === 'AI' && startingTurn === TURNS.O); 
+        setWinner(null); 
+        setPointsX(0);
+        setPointsO(0); 
+        resetGameStorage(); 
     };
 
     // Función para iniciar un nuevo juego, manteniendo el turno del jugador que acaba de jugar
     const startNewGame = () => {
-        const startingTurn = turn; // El mismo jugador comienza de nuevo
-        setBoard(Array(9).fill(null)); // Limpia el tablero
-        setTurn(startingTurn); // Establece el nuevo turno inicial
-        setAiTurn(gameMode === 'AI' && startingTurn === TURNS.O); // Si es el turno de la IA, la activa
-        setWinner(null); // Reinicia el estado de ganador
-        newGame(); // Reinicia el almacenamiento local sin borrar puntos
+        const startingTurn = turn; 
+        setBoard(Array(9).fill(null)); 
+        setTurn(startingTurn); 
+        setAiTurn(gameMode === 'AI' && startingTurn === TURNS.O); 
+        setWinner(null);
+        newGame();
     };
 
     // Función para manejar el movimiento de la IA
     const handleAIMove = (currentBoard) => {
-        const bestMove = minimax(currentBoard, TURNS.O); // Calcula el mejor movimiento con minimax
+        const bestMove = aiMove(currentBoard, TURNS.O);
         setTimeout(() => {
-            updateBoard(bestMove.index); // Realiza el movimiento después de un retraso
-            setAiTurn(false); // Desactiva aiTurn después del movimiento de la IA
-        }, 500);
+            updateBoard(bestMove.index); 
+            setAiTurn(false); 
+        }, 100);
     };
 
     // Realiza el movimiento de la IA si es su turno

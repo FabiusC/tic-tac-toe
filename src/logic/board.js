@@ -20,6 +20,21 @@ export const checkEndGame = (boardToCheck) => {
     return boardToCheck.every((square) => square !== null);
 }
 
+// Movimiento de la IA
+export const aiMove = (newBoard, player) => {
+    // Posibilidad de hacer un movimiento erróneo (5% de probabilidad)
+    if (Math.floor(Math.random() * 100) < 5) {
+        const availableSquares = newBoard
+            .map((value, index) => (value === null ? index : null))
+            .filter((index) => index !== null);
+
+        const randomIndex = Math.floor(Math.random() * availableSquares.length);
+        return { index: availableSquares[randomIndex] };
+    } else {
+        return minimax(newBoard, player);
+    }
+}
+
 // Algoritmo Minimax
 export const minimax = (newBoard, player) => {
     const availableSquares = newBoard
